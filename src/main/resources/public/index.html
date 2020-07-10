@@ -71,11 +71,9 @@
     <br>
         <form id="OrdersForm">
             <label for="food">Food</label>
-            <input type="" name="checkInDate" id="checkIn" required>
-            <input type="time" name="checkInTime" required>
-            <label for="checkOut">Check out</label>
-            <input type="date" name="checkOutDate" id="checkOut" required>
-            <input type="time" name="checkOutTime" required>
+            <input type="text" name="food" id="food" required>
+            <label for="restaurant">Restaurant</label>
+            <input type="text" name="food" id="restaurant" required>
             <input type="submit" value="Save" />
             <input type="reset" value="Cancel" />
         </form>
@@ -83,12 +81,12 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Check in</th>
-                <th>Check out</th>
+                <th>Food</th>
+                <th>Restaurant</th>
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody id="entryDisplay">
+            <tbody id="foodDisplay">
             <tr>
                 <td colspan="3">Loading...</td>
             </tr>
