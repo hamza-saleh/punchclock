@@ -21,4 +21,10 @@ public class EntryService {
     public List<Entry> findAll() {
         return entryRepository.findAll();
     }
+
+    public void deleteEntry(long id){entryRepository.deleteById(id);}
+
+    public void  updateEntry(Entry entry) {
+        entryRepository.save(entry);
+    }
 }
