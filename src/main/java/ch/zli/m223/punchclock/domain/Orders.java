@@ -1,7 +1,14 @@
 package ch.zli.m223.punchclock.domain;
+import javax.persistence.*;
 
+@Entity
 public class Orders {
+
+
     private String food;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
     public String getFood(){
