@@ -3,6 +3,7 @@ let entries = [];
 let birthdays = [];
 let mode = 'create';
 let currentEntry;
+let currentBirthday;
 
 const dateAndTimeToDate = (dateString, timeString) => {
     return new Date(`${dateString}T${timeString}`).toISOString();
@@ -89,7 +90,7 @@ const deleteBirthday = (id) => {
     fetch(`${URL}/birthday/${id}`, {
         method: 'DELETE'
     }).then((result) => {
-        indexEntries2();
+        indexBirthday();
     });
 };
 
@@ -103,7 +104,7 @@ const updateBirthday = (birthday) => {
         body: JSON.stringify(birthday)
     }).then((result) => {
         result.json().then((birthday) => {
-            birthdays = birthdays.map((e) => e.id === birthday.id ? birthday : e);
+            birthdays = birthdays.map((h) => h.id === birthday.id ? birthday : h);
             renderEntries2();
         });
     });
@@ -121,7 +122,7 @@ const resetForm2 = () => {
     const birthdayForm = document.querySelector('#birthdayForm');
     birthdayForm.reset();
     mode = 'create';
-    currentEntry = null;
+    currentBirthday = null;
 }
 
 const resetForm3 = () => {
@@ -148,17 +149,17 @@ const saveForm = (e) => {
     resetForm();
 }
 
-const saveForm2 = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const entry = {};
-    birthdays['birthday'] = dateAndTimeToDate(formData.get('birthday'));
+const saveForm2 = (h) => {
+    h.preventDefault();
+    const formData = new FormData(h.target);
+    const birthday = {};
+    birthday['birthday1'] = dateAndTimeToDate(formData.get('birthday1'), formData.get('time'));
 
     if (mode === 'create') {
-        createBirthday(birthdays);
+        createBirthday(birthday);
     } else {
-        birthdays.id = currentEntry.id;
-        updateBirthday(birthdays);
+        birthday.id = currentBirthday.id;
+        updateBirthday(birthday);
     }
     resetForm2();
 }
@@ -180,7 +181,7 @@ const editEntry = (entry) => {
 
 const editBirthday = (birthday) => {
     mode = 'edit';
-    currentEntry = birthday;
+    currentBirthday = birthday;
 
     const birthdayForm = document.querySelector('#birthdayForm');
     const checkBirthday = birthdayForm.querySelector('[name="birthday"]');
@@ -243,17 +244,21 @@ const renderEntries2 = () => {
     birthdays.forEach((birthday) => {
         const row = document.createElement('tr');
         row.appendChild(createCell(birthday.id));
-        row.appendChild(createCell(new Date(birthday.birthday).toLocaleString()));
-        row.appendChild(createActions(birthday));
+        row.appendChild(createCell(new Date(birthday.birthday1).toLocaleString()));
+        row.appendChild(createActions2(birthday));
         display.appendChild(row);
     });
 };
 
 document.addEventListener('DOMContentLoaded', function(){
     const entryForm = document.querySelector('#entryForm',);
+    const birthdayForm = document.querySelector('#birthdayForm',);
     entryForm.addEventListener('submit', saveForm);
     entryForm.addEventListener('reset', resetForm);
     indexEntries();
+    birthdayForm.addEventListener('submit', saveForm2);
+    birthdayForm.addEventListener('reset', resetForm2);
+    indexBirthday();
 
 });
 

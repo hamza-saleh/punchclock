@@ -14,14 +14,14 @@ public class Birthday {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column(nullable = false)
-    private LocalDateTime birthday;
+    private LocalDateTime birthday1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     public LocalDateTime getBirthday() {
-        return birthday;
+        return birthday1;
     }
 
     public long getId() {
@@ -29,7 +29,7 @@ public class Birthday {
     }
 
     public void setBirthday(LocalDateTime birthday) {
-        this.birthday = birthday;
+        this.birthday1 = birthday;
     }
 
     public void setId(long id) {
