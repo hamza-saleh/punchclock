@@ -15,4 +15,8 @@ public class Orders {
     public void setFood(String food) {
         this.food = food;
     }
+
+    public void setID(long ID) {
+        this.ID = ID;
+    }
 }

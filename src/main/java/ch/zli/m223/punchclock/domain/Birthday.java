@@ -17,4 +17,8 @@ public class Birthday {
     public void setBirthday(LocalDateTime birthday) {
         this.birthday = birthday;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
