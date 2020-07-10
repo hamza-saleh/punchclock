@@ -1,30 +1,30 @@
 package ch.zli.m223.punchclock.service;
 
-import ch.zli.m223.punchclock.domain.Entry;
-import ch.zli.m223.punchclock.repository.EntryRepository;
+import ch.zli.m223.punchclock.domain.Birthday;
+import ch.zli.m223.punchclock.repository.BirthdayRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class EntryService {
-    private EntryRepository entryRepository;
+public class BirthdayService {
+    private BirthdayRepository birthdayRepository;
 
-    public EntryService(EntryRepository entryRepository) {
-        this.entryRepository = entryRepository;
+    public BirthdayService(BirthdayRepository birthdayRepository) {
+        this.birthdayRepository = birthdayRepository;
     }
 
-    public Entry createEntry(Entry entry) {
-        return entryRepository.saveAndFlush(entry);
+    public Birthday createBirthday(Birthday birthday) {
+        return birthdayRepository.saveAndFlush(birthday);
     }
 
-    public List<Entry> findAll() {
-        return entryRepository.findAll();
+    public List<Birthday> findAllBirthday() {
+        return birthdayRepository.findAll();
     }
 
-    public void deleteEntry(long id){entryRepository.deleteById(id);}
+    public void deleteBirthday(long id){birthdayRepository.deleteById(id);}
 
-    public void  updateEntry(Entry entry) {
-        entryRepository.save(entry);
+    public void  updateEntry(Birthday birthday) {
+        birthdayRepository.save(birthday);
     }
 }
