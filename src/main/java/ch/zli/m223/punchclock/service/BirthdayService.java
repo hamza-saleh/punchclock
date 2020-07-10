@@ -24,7 +24,7 @@ public class BirthdayService {
 
     public void deleteBirthday(long id){birthdayRepository.deleteById(id);}
 
-    public void  updateEntry(Birthday birthday) {
+    public void  updateBirthday(Birthday birthday) {
         birthdayRepository.save(birthday);
     }
 }
