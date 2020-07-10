@@ -5,4 +5,16 @@ import java.time.LocalDateTime;
 public class Birthday {
     private LocalDateTime birthday;
     private long id;
+
+    public LocalDateTime getBirthday() {
+        return birthday;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setBirthday(LocalDateTime birthday) {
+        this.birthday = birthday;
+    }
 }
