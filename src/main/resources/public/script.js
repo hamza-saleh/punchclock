@@ -1,5 +1,6 @@
 const URL = 'http://localhost:8081';
 let entries = [];
+let birthdays = [];
 let mode = 'create';
 let currentEntry;
 
@@ -52,8 +53,58 @@ const updateEntry = (entry) => {
         body: JSON.stringify(entry)
     }).then((result) => {
         result.json().then((entry) => {
-            entries = entries.map((e) => e.id === entry.id ? entry : e);
+            birthdays = birthdays.map((e) => e.id === entry.id ? entry : e);
             renderEntries();
+        });
+    });
+}
+const createBirthday = (birthday) => {
+    fetch(`${URL}/birthday`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(birthday)
+    }).then((result) => {
+        result.json().then((birthday) => {
+            birthdays.push(birthday);
+            renderEntries2();
+        });
+    });
+};
+
+const indexBirthday = () => {
+    fetch(`${URL}/birthday`, {
+        method: 'GET'
+    }).then((result) => {
+        result.json().then((birthday) => {
+            birthdays = birthday;
+            renderEntries2();
+        });
+    });
+    renderEntries2();
+};
+
+const deleteBirthday = (id) => {
+    fetch(`${URL}/birthday/${id}`, {
+        method: 'DELETE'
+    }).then((result) => {
+        indexEntries2();
+    });
+};
+
+
+const updateBirthday = (birthday) => {
+    fetch(`${URL}/birthday/${birthday.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(birthday)
+    }).then((result) => {
+        result.json().then((birthday) => {
+            birthdays = birthdays.map((e) => e.id === birthday.id ? birthday : e);
+            renderEntries2();
         });
     });
 }
@@ -65,6 +116,21 @@ const resetForm = () => {
     mode = 'create';
     currentEntry = null;
 }
+
+const resetForm2 = () => {
+    const birthdayForm = document.querySelector('#birthdayForm');
+    birthdayForm.reset();
+    mode = 'create';
+    currentEntry = null;
+}
+
+const resetForm3 = () => {
+    const OrdersForm = document.querySelector('#OrdersForm');
+    OrdersForm.reset();
+    mode = 'create';
+    currentEntry = null;
+}
+
 
 const saveForm = (e) => {
     e.preventDefault();
@@ -82,6 +148,21 @@ const saveForm = (e) => {
     resetForm();
 }
 
+const saveForm2 = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const entry = {};
+    birthdays['birthday'] = dateAndTimeToDate(formData.get('birthday'));
+
+    if (mode === 'create') {
+        createBirthday(birthdays);
+    } else {
+        birthdays.id = currentEntry.id;
+        updateBirthday(birthdays);
+    }
+    resetForm2();
+}
+
 const editEntry = (entry) => {
     mode = 'edit';
     currentEntry = entry;
@@ -95,6 +176,15 @@ const editEntry = (entry) => {
     checkOutDateField.value = entry.checkOut.split('T')[0];
     const checkOutTimeField = entryForm.querySelector('[name="checkOutTime"]');
     checkOutTimeField.value = entry.checkOut.split('T')[1].slice(0, -3);
+}
+
+const editBirthday = (birthday) => {
+    mode = 'edit';
+    currentEntry = birthday;
+
+    const birthdayForm = document.querySelector('#birthdayForm');
+    const checkBirthday = birthdayForm.querySelector('[name="birthday"]');
+    checkBirthday.value = birthday.birthday.split('T')[0];
 }
 
 const createCell = (text) => {
@@ -118,6 +208,21 @@ const createActions = (entry) => {
 
     return cell;
 }
+const createActions2 = (birthday) => {
+    const cell = document.createElement('td');
+
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete';
+    deleteButton.addEventListener('click', () => deleteBirthday(birthday.id));
+    cell.appendChild(deleteButton);
+
+    const editButton = document.createElement('button');
+    editButton.innerText = 'Edit';
+    editButton.addEventListener('click', () => editBirthday(birthday));
+    cell.appendChild(editButton);
+
+    return cell;
+}
 
 const renderEntries = () => {
     const display = document.querySelector('#entryDisplay');
@@ -132,8 +237,20 @@ const renderEntries = () => {
     });
 };
 
+const renderEntries2 = () => {
+    const display = document.querySelector('#birthdayDisplay');
+    display.innerHTML = '';
+    birthdays.forEach((birthday) => {
+        const row = document.createElement('tr');
+        row.appendChild(createCell(birthday.id));
+        row.appendChild(createCell(new Date(birthday.birthday).toLocaleString()));
+        row.appendChild(createActions(birthday));
+        display.appendChild(row);
+    });
+};
+
 document.addEventListener('DOMContentLoaded', function(){
-    const entryForm = document.querySelector('#entryForm');
+    const entryForm = document.querySelector('#entryForm',);
     entryForm.addEventListener('submit', saveForm);
     entryForm.addEventListener('reset', resetForm);
     indexEntries();
